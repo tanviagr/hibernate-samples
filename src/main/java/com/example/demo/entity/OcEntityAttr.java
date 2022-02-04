@@ -1,68 +1,78 @@
 package com.example.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Any;
+import org.hibernate.annotations.AnyMetaDef;
+import org.hibernate.annotations.MetaValue;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
-@Table(name = "OC_ENTITY_ATTR", schema = "public")
 public class OcEntityAttr {
     @Id
-    @Column(name = "OC_ENTITY_ID")
-    private Long ocEntityId;
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    private long id;
 
-    @Column(name = "START_DATE")
-    private Date startDate;
+    private String OcEntityName;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ATTR_TYPE_ID", nullable = false)
-    private OcAttrType ocAttrType;
+    @JoinColumn(name = "attr_id", insertable = false, updatable = false)
+    private AttrType attrType;
 
-    @Column(name = "CHAR_VALUE")
-    private int charValue; //conditional join
+    @Any(
+            metaColumn = @Column(name = "attr_id")
+    )
+    @AnyMetaDef(
+            idType = "string",
+            metaType = "int",
+            metaValues = {
+                    @MetaValue(targetEntity = Location.class, value = "1"),
+                    @MetaValue(targetEntity = Infrastructure.class, value = "2")
+            }
+    )
+    @JoinColumn(name = "char_value")
+    private Object entity;
 
-    public OcEntityAttr(Long ocEntityId, Date startDate, OcAttrType ocAttrType, int charValue) {
-        this.ocEntityId = ocEntityId;
-        this.startDate = startDate;
-        this.ocAttrType = ocAttrType;
-        this.charValue = charValue;
+    public OcEntityAttr(long id, String ocEntityName, AttrType attrType, Object entity) {
+        this.id = id;
+        OcEntityName = ocEntityName;
+        this.attrType = attrType;
+        this.entity = entity;
     }
 
     public OcEntityAttr() {
     }
 
-    public Long getOcEntityId() {
-        return ocEntityId;
+    public long getId() {
+        return id;
     }
 
-    public void setOcEntityId(Long ocEntityId) {
-        this.ocEntityId = ocEntityId;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public String getOcEntityName() {
+        return OcEntityName;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setOcEntityName(String ocEntityName) {
+        OcEntityName = ocEntityName;
     }
 
-    public OcAttrType getOcAttrType() {
-        return ocAttrType;
+    public AttrType getAttrType() {
+        return attrType;
     }
 
-    public void setOcAttrType(OcAttrType ocAttrType) {
-        this.ocAttrType = ocAttrType;
+    public void setAttrType(AttrType attrType) {
+        this.attrType = attrType;
     }
 
-    public int getCharValue() {
-        return charValue;
+    public Object getEntity() {
+        return entity;
     }
 
-    public void setCharValue(int charValue) {
-        this.charValue = charValue;
+    public void setEntity(Object entity) {
+        this.entity = entity;
     }
-
 }

@@ -1,15 +1,36 @@
 package com.example.demo.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
-@Table(name = "LOCATION", schema = "public")
 public class Location {
     @Id
-    @Column(name = "LOC_ID")
-    private Long locId;
+    private String id;
 
-    @Column(name = "LOC_NAME")
-    private String locName;
+    private String locationDescription;
 
+    public Location(String id, String locationDescription) {
+        this.id = id;
+        this.locationDescription = locationDescription;
+    }
+
+    public Location() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getLocationDescription() {
+        return locationDescription;
+    }
+
+    public void setLocationDescription(String locationDescription) {
+        this.locationDescription = locationDescription;
+    }
 }

@@ -25,7 +25,7 @@ public class ParentClass {
             }
     )
     @JoinColumn(name = "ITEM_ID")
-    private Object entity;//Location location;
+    private Object entity;
 
     public ParentClass(long id, String description, Object entity) {
         this.id = id;
